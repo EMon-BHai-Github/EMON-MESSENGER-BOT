@@ -1,47 +1,90 @@
+const os = require('os');
+
 module.exports.config = {
-    name: "admin",
-    version: "1.0.0",
-    permission: 0,
-    credits: "nayan",
-    prefix: true,
-    description: "",
-    category: "prefix",
-    usages: "",
-    cooldowns: 5,
-    dependencies: 
-	{
-    "request":"",
-    "fs-extra":"",
-    "axios":""
+  name: "admin",
+  version: "3.0.0",
+  permission: 0,
+  credits: "Emon",
+  prefix: true,
+  description: "Show Admin & Server Information",
+  category: "Utilities",
+  usages: `${global.config.PREFIX}admin`,
+  cooldowns: 5,
+  dependencies: {
+    "axios": "",
+    "fs-extra": "",
+    "request": ""
   }
 };
-module.exports.run = async function({ api,event,args,client,Users,Threads,__GLOBAL,Currencies }) {
-const axios = global.nodemodule["axios"];
-const request = global.nodemodule["request"];
-const fs = global.nodemodule["fs-extra"];
-const time = process.uptime(),
-		hours = Math.floor(time / (60 * 60)),
-		minutes = Math.floor((time % (60 * 60)) / 60),
-		seconds = Math.floor(time % 60);
-const moment = require("moment-timezone");
-var juswa = moment.tz("Asia/Dhaka").format("『D/MM/YYYY』 【hh:mm:ss】");
-  
-var callback = () => api.sendMessage({body:`
---------------------------------------------
-𝐍𝐚𝐦𝐞       : 𝐌𝐨𝐡𝐚𝐦𝐦𝐚𝐝 𝐍𝐚𝐲𝐚𝐧
-𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 : 𝐌𝐨𝐡𝐚𝐦𝐦𝐚𝐝 𝐍𝐚𝐲𝐚𝐧
-𝐑𝐞𝐥𝐢𝐠𝐢𝐨𝐧   : 𝐈𝐬𝐥𝐚𝐦
-𝐏𝐞𝐫𝐦𝐚𝐧𝐞𝐧𝐭 𝐀𝐝𝐝𝐫𝐞𝐬𝐬: 𝐓𝐚𝐧𝐠𝐚𝐢𝐥, 𝐃𝐡𝐚𝐤𝐚
-𝐂𝐮𝐫𝐫𝐞𝐧𝐭 𝐀𝐝𝐝𝐫𝐞𝐬𝐬: 𝐌𝐨𝐲𝐦𝐨𝐧𝐬𝐢𝐧𝐡, 𝐃𝐡𝐚𝐤𝐚 𝐁𝐲𝐩𝐚𝐬𝐬
-𝐆𝐞𝐧𝐝𝐞𝐫.   : 𝐌𝐚𝐥𝐞
-𝐀𝐠𝐞           : 𝟏𝟖+
-𝐑𝐞𝐥𝐚𝐭𝐢𝐨𝐧𝐬𝐡𝐢𝐩 : 𝐒𝐢𝐧𝐠𝐥𝐞
-𝐖𝐨𝐫𝐤        : 𝐒𝐭𝐮𝐝𝐞𝐧𝐭
-𝐆𝐦𝐚𝐢𝐥       : mohammadnayan447@gmail.com
-𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩: wa.me/+8801615298449
-𝐓𝐞𝐥𝐞𝐠𝐫𝐚𝐦  : t.me/MOHAMMADNAYAN
-𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐋𝐢𝐧𝐤 : https://www.facebook.com/www.xnxx.com169`,attachment: fs.createReadStream(__dirname + "/cache/1.png")}, event.threadID, () => 
-    fs.unlinkSync(__dirname + "/cache/1.png"));  
-      return request(encodeURI(`https://graph.facebook.com/100000959749712/picture?height=720&width=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`)).pipe(
-fs.createWriteStream(__dirname+'/cache/1.png')).on('close',() => callback());
-   };
+
+module.exports.run = async function ({ api, event }) {
+  try {
+    // Server uptime
+    const uptimeSeconds = process.uptime();
+    const uptime = new Date(uptimeSeconds * 1000).toISOString().substr(11, 8);
+
+    // Admin + Server Info Message
+    const infoMessage = `
+
+╔════════════════════╗
+║     🌸  𝑨𝒅𝒎𝒊𝒏 𝑰𝒏𝒇𝒐  🌸
+╚════════════════════╝
+
+👤 ব্যক্তিগত তথ্য
+─────────────────────
+✨ নাম             : ইমন 🥰
+☪️ ধর্ম              : ইসলাম ❤️
+🏡 বাড়ি             : মাদারিপুর 😌
+🌍 বর্তমান ঠিকানা   : মালয়েশিয়া 🇲🇾
+💼 পেশা            : মালায়সিয়ান প্রবাসি 😁
+🎂 বয়স             : ২১ 🤭
+📏 উচ্চতা          : জানিনা 😔
+⚖️ ওজন            : জানিনা 😔
+🩸 রক্ত             : O+ 😔
+🎨 গায়ের রং       : কালো 🤗
+🙅 বেয়াদবি        : করি না ☺️
+💰 ধন সম্পদ      : নাই ☺️
+🎯 শখ              : নাই 😊
+❤️ ভালোবাসা     : একা 😊
+─────────────────────
+🌹 ধন্যবাদ 🌹
+
+━━━━━━━━━━━━━━━━━━━
+🖥️ 𝐒𝐞𝐫𝐯𝐞𝐫 𝐈𝐧𝐟𝐨
+━━━━━━━━━━━━━━━━━━━
+• Platform        : ${os.platform()}
+• CPU            : ${os.cpus()[0].model}
+• Node.js Version: ${process.version}
+• Uptime         : ${uptime}
+• Total Memory   : ${(os.totalmem() / (1024 ** 3)).toFixed(2)} GB
+• Free Memory    : ${(os.freemem() / (1024 ** 3)).toFixed(2)} GB
+━━━━━━━━━━━━━━━━━━━
+🔰 By: 𝐄𝐦𝐨𝐧
+
+╔══✪〘 ADMIN INFO 〙✪══╗
+║ 👤 Name:  Emon Hawladar
+║ 📘 Facebook: fb.com/EMon.BHai.FACEBOOK
+║ 📧 Gmail: emonhawladar311@gmail.com
+║ 📞 WhatsApp: wa.me/+8801309991724
+╚═════════════════════╝
+`;
+
+    // Send with picture
+    return api.sendMessage(
+      {
+        body: infoMessage,
+        attachment: await require("axios")({
+          url: "https://i.postimg.cc/SNm9B2p1/IMG-20250902-WA0048.jpg",
+          method: "GET",
+          responseType: "stream"
+        }).then(res => res.data)
+      },
+      event.threadID,
+      event.messageID
+    );
+
+  } catch (e) {
+    console.log(e);
+    return api.sendMessage("❌ একটি ত্রুটি ঘটেছে।", event.threadID, event.messageID);
+  }
+};
